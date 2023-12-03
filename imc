@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calcolatore IMC</title>
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Calcolatore IMC</h2>
+    <form method="post">
+        <label for="altezza">Inserisci l'altezza (in centimetri):</label>
+        <input type="number" name="altezza" id="altezza" required><br><br>
+        
+        <label for="peso">Inserisci il peso (in kg):</label>
+        <input type="number" name="peso" id="peso" required><br><br>
+        
+        <input type="submit" value="Calcola IMC">
+    </form>
+
+    <?php
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $altezza = $_POST["altezza"] / 100; // converti l'altezza in metri
+        $peso = $_POST["peso"];
+        
+        $imc = $peso / ($altezza * $altezza); // calcola l'IMC
+
+        // Mostra l'IMC calcolato
+        echo '<h3>Il tuo IMC è: ' . number_format($imc, 2) . '</h3>';
+
+        // Determina lo stato ponderale e mostra una tabella
+        echo '<h3>Stato Ponderale:</h3>';
+        echo '<table>';
+        echo '<tr><th>Valore IMC</th><th>Stato</th></tr>';
+        
+        if ($imc < 18.5) {
+            echo '<tr><td>' . number_format($imc, 2) . '</td><td>Sottopeso</td></tr>';
+        } elseif ($imc >= 18.5 && $imc < 24.9) {
+            echo '<tr><td>' . number_format($imc, 2) . '</td><td>Peso forma</td></tr>';
+        } elseif ($imc >= 24.9 && $imc < 29.9) {
+            echo '<tr><td>' . number_format($imc, 2) . '</td><td>Sovrappeso</td></tr>';
+        } else {
+            echo '<tr><td>' . number_format($imc, 2) . '</td><td>Obeso</td></tr>';
+        }
+        
+        echo '</table>';
+    }
+    ?>
+</body>
+</html>
